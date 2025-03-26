@@ -15,7 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class SeleniumDemo {
 	
 	 
-	 private WebDriver driver=null;
+	 private WebDriver driver;
 
 	    @BeforeClass
 	    public void setUp() {

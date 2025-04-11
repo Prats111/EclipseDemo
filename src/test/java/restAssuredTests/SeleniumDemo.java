@@ -31,15 +31,19 @@ public class SeleniumDemo {
 	    	
 	    	String username = System.getenv("SAUCE_USERNAME");
 	    	String accessKey = System.getenv("SAUCE_ACCESS_KEY");
-	         DesiredCapabilities caps = new DesiredCapabilities();
-	         caps.setCapability("browserName", "chrome");
-	         caps.setCapability("platformName", "Windows 11");
-	         caps.setCapability("browserVersion", "latest");
-	         caps.setCapability("name", "MySauceLabsTest");
-	         WebDriver driver = new RemoteWebDriver(
-	                 new URL("https://" + username + ":" + accessKey + "@ondemand.eu-central-1.saucelabs.com:443/wd/hub"),
-	                 caps
-	             );
+	    	
+	    	ChromeOptions browserOptions = new ChromeOptions();
+	    	browserOptions.setPlatformName("Windows 11");
+	    	browserOptions.setBrowserVersion("latest");
+	    	Map<String, Object> sauceOptions = new HashMap<>();
+	    	sauceOptions.put("username", username);
+	    	sauceOptions.put("accessKey", accessKey);
+	    	browserOptions.setCapability("sauce:options", sauceOptions);
+
+	    	// start the session
+	    	URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
+	    	RemoteWebDriver driver = new RemoteWebDriver(url, browserOptions);
+
 	         driver.get("http://www.google.com");
 	        System.out.println("Title: " + driver.getTitle());
 	        driver.quit();	        

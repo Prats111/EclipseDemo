@@ -11,4 +11,4 @@ COPY . .
 RUN mvn dependency:resolve
 
 # Command to run your tests
-CMD ["mvn", "test"]
+CMD ["mvn","clean", "test"]

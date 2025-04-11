@@ -33,20 +33,23 @@ public class SeleniumDemo {
 //	         capabilities.setCapability("version", "latest");
 //	         capabilities.setCapability("name", "Sample Test");
 
-	         
+	    	String username = System.getenv("SAUCE_USERNAME");
+	        String accessKey = System.getenv("SAUCE_ACCESS_KEY");
+	        String sauceURL = "https://" + username + ":" + accessKey + "@ondemand.saucelabs.com/wd/hub";
+
 	    	ChromeOptions browserOptions = new ChromeOptions();
 	    	browserOptions.setPlatformName("Windows 8.1");
 	    	browserOptions.setBrowserVersion("latest");
 	    	Map<String, Object> sauceOptions = new HashMap<>();
-	    	sauceOptions.put("username", "oauth-pratikshya069-ebc02");
-	    	sauceOptions.put("accessKey", "8119ff65-a037-42a9-9ab2-c120a914e7a0");
+	    	sauceOptions.put("username", username);
+	    	sauceOptions.put("accessKey", accessKey);
 	    	sauceOptions.put("build", "23");
 	    	sauceOptions.put("name", "demo");
 	    	browserOptions.setCapability("sauce:options", sauceOptions);
 
 //	    	// start the session
-    	URL url = new URL("https://oauth-pratikshya069-ebc02:8119ff65-a037-42a9-9ab2-c120a914e7a0@ondemand.eu-central-1.saucelabs.com:443/wd/hub");
-    	RemoteWebDriver driver = new RemoteWebDriver(url, browserOptions);
+//    	URL url = new URL("https://oauth-pratikshya069-ebc02:8119ff65-a037-42a9-9ab2-c120a914e7a0@ondemand.eu-central-1.saucelabs.com:443/wd/hub");
+    	RemoteWebDriver driver = new RemoteWebDriver(new URL(sauceURL), browserOptions);
 //	    	WebDriverManager.chromedriver().setup();
 //	    	WebDriver driver = new ChromeDriver();
 	        driver.manage().window().maximize();

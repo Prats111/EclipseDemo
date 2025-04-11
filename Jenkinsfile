@@ -17,11 +17,11 @@ pipeline {
 
          stage('Run Selenium Tests in Docker') {
             steps {
-               docker.image('prats069/selenium-sauce3').inside ("-e SAUCE_USERNAME=$SAUCE_USERNAME -e SAUCE_ACCESS_KEY=$SAUCE_ACCESS_KEY"){
+               docker.image('prats069/selenium-sauce3').inside{
                      sh "echo SAUCE_USERNAME=$SAUCE_USERNAME"
     				 sh "echo SAUCE_ACCESS_KEY=$SAUCE_ACCESS_KEY"
-    				 sh "mvn test"
-                //sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
+    				// sh "mvn test"
+                sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
             }
         }
     }}

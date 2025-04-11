@@ -24,5 +24,5 @@ pipeline {
                 //sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
             }
         }
-    }
+    }}
 }

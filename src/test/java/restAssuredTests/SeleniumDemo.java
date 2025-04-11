@@ -32,14 +32,15 @@ public class SeleniumDemo {
 	    	ChromeOptions browserOptions = new ChromeOptions();
 	    	browserOptions.setPlatformName("Windows 11");
 	    	browserOptions.setBrowserVersion("latest");
+	    	 String username = System.getenv("SAUCE_USERNAME");
+	         String accessKey = System.getenv("SAUCE_ACCESS_KEY");
 	    	Map<String, Object> sauceOptions = new HashMap<>();
-	    	sauceOptions.put("username", "oauth-pratikshya069-ebc02");
-	    	sauceOptions.put("accessKey", "734783e4-2f59-44d4-8aed-7d947f118825");
-	    	sauceOptions.put("build", "11");
-	    	sauceOptions.put("name", "demo1");
+	    	sauceOptions.put("username", username);
+	    	sauceOptions.put("accessKey",  accessKey);
+	    	
 	    	browserOptions.setCapability("sauce:options", sauceOptions);
-	    	String sauceURL = "https://oauth-pratikshya069-ebc02:734783e4-2f59-44d4-8aed-7d947f118825@ondemand.eu-central-1.saucelabs.com:443/wd/hub";
-	        
+	    	String sauceURL = "https://" + username + ":" + accessKey + "@ondemand.eu-central-1.saucelabs.com:443/wd/hub";
+//	          
 	    	// start the session
 	    	URL url = new URL(sauceURL);
 	    	RemoteWebDriver driver = new RemoteWebDriver(url, browserOptions);

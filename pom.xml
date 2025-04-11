@@ -27,6 +27,10 @@
                     <includes>
                     <include>**/SeleniumDemo.java</include>
                 </includes>
+                <reportsDirectory>target/surefire-reports</reportsDirectory>
+                <testNG>
+                    <outputDirectory>target/surefire-reports</outputDirectory>
+                </testNG>
                 </configuration>
             </plugin>
         </plugins>

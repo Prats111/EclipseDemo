@@ -1,69 +1,62 @@
 package restAssuredTests;
 
 import org.testng.annotations.BeforeMethod;
+import java.net.URL;
 import org.testng.annotations.*;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SeleniumDemo {
 	
-	 
-	 private WebDriver driver;
+	
 
-	    @BeforeClass
-	    public void setUp() {
-	        // Setup ChromeDriver using WebDriverManager
-	        WebDriverManager.chromedriver().setup();
+	    @Test
+	    public void setUp() throws MalformedURLException {
+//	    	 DesiredCapabilities capabilities = DesiredCapabilities();
+//	         capabilities.setCapability("platform", "Windows 10");
+//	         capabilities.setCapability("version", "latest");
+//	         capabilities.setCapability("name", "Sample Test");
 
-	        // Initialize the ChromeDriver
-	        driver = new ChromeDriver();
+	         
+	    	ChromeOptions browserOptions = new ChromeOptions();
+	    	browserOptions.setPlatformName("Windows 8.1");
+	    	browserOptions.setBrowserVersion("latest");
+	    	Map<String, Object> sauceOptions = new HashMap<>();
+	    	sauceOptions.put("username", "oauth-pratikshya069-ebc02");
+	    	sauceOptions.put("accessKey", "8119ff65-a037-42a9-9ab2-c120a914e7a0");
+	    	sauceOptions.put("build", "23");
+	    	sauceOptions.put("name", "demo");
+	    	browserOptions.setCapability("sauce:options", sauceOptions);
 
-	        // Maximize the browser window
+//	    	// start the session
+    	URL url = new URL("https://oauth-pratikshya069-ebc02:8119ff65-a037-42a9-9ab2-c120a914e7a0@ondemand.eu-central-1.saucelabs.com:443/wd/hub");
+    	RemoteWebDriver driver = new RemoteWebDriver(url, browserOptions);
+//	    	WebDriverManager.chromedriver().setup();
+//	    	WebDriver driver = new ChromeDriver();
 	        driver.manage().window().maximize();
 
 	        // Navigate to the application URL
-	        driver.get("https://rahulshettyacademy.com/AutomationPractice/");
+	        driver.get("https://www.google.com");
+	        System.out.println(driver.getTitle());
+	        System.out.flush(); 
+	        driver.quit();	        
 	    }
 
-	    @Test
-	    public void handleAutoSuggestion() throws InterruptedException {
-	        // Locate the input field with autosuggestions
-	        WebElement autoCompleteInput = driver.findElement(By.id("autocomplete"));
-
-	        // Enter a partial input to trigger the autosuggestion
-	        autoCompleteInput.sendKeys("Ind");
-
-	        // Pause to allow suggestions to load
-	        Thread.sleep(2000);
-
-	        // Capture all suggestion elements
-	        List<WebElement> suggestions = driver.findElements(By.cssSelector(".ui-menu-item-wrapper"));
-
-	        // Iterate through the suggestions and select "India"
-	        for (WebElement suggestion : suggestions) {
-	            if (suggestion.getText().equals("India")) {
-	                suggestion.click();
-	                break;
-	            }
-	        }
-
-	        // Verify the selected value
-	        String selectedValue = autoCompleteInput.getAttribute("value");
-	        assert selectedValue.equals("India") : "Expected value not selected!";
-	    }
-
-	    @AfterClass
-	    public void tearDown() {
-	        // Close the browser
-	        if (driver != null) {
-	            driver.quit();
-	        }
-	    }
+	  
 }

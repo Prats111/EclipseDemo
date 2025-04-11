@@ -35,7 +35,7 @@ public class SeleniumDemo {
 
 	    	String username = System.getenv("SAUCE_USERNAME");
 	        String accessKey = System.getenv("SAUCE_ACCESS_KEY");
-	        String sauceURL = "https://" + username + ":" + accessKey + "@ondemand.saucelabs.com/wd/hub";
+	        String sauceURL = "https://" + username + ":" + accessKey + "@ondemand.eu-central-1.saucelabs.com:443/wd/hub";
 
 	    	ChromeOptions browserOptions = new ChromeOptions();
 	    	browserOptions.setPlatformName("Windows 8.1");

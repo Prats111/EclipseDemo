@@ -1,26 +1,40 @@
 pipeline {
-    agent {
-        docker {
-            image 'prats069/selenium-sauce3:latest'
-        }
+    agent any
+
+    environment {
+        SAUCE_USERNAME = credentials('sauce-username')     // Use Jenkins credentials ID
+        SAUCE_ACCESS_KEY = credentials('sauce-access-key') // Use Jenkins credentials ID
     }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'mvn clean install'
+                git 'https://github.com/your-username/your-selenium-project.git'
             }
         }
-        stage('Test') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'saucelabs-credentials', usernameVariable: 'SAUCE_USERNAME', passwordVariable: 'SAUCE_ACCESS_KEY')]) {
-                    sh "mvn test -Dsauce.username=${SAUCE_USERNAME} -Dsauce.accessKey=${SAUCE_ACCESS_KEY} -Dsauce.testName='My Test' -Dsauce.build='Jenkins Build ${BUILD_NUMBER}'"
+
+        stage('Build and Test in Docker') {
+            agent {
+                docker {
+                    image 'prats069/selenium-sauce3:latest' // Or your custom Docker image
+                    args '-v /root/.m2:/root/.m2'          // Cache Maven dependencies
                 }
             }
+            steps {
+                sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
+            }
         }
     }
+
     post {
+        always {
+            junit '**/target/surefire-reports/*.xml' // Adjust path based on your project setup
+        }
+        failure {
+            echo 'Tests failed. Check reports for details.'
+        }
         success {
-            junit '**/TEST-*.xml'
+            echo 'Tests passed successfully!'
         }
     }
 }

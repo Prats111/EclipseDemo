@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/your-selenium-project.git'
+                git 'https://github.com/Prats111/EclipseDemo.git'
             }
         }
 

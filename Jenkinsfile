@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+            SAUCE_USERNAME = credentials('sauce-username')
+            SAUCE_ACCESS_KEY = credentials('sauce-access-key')
+            SAUCE_DATA_CENTER = 'EU Central 1' // Replace with your Sauce Labs region
+        }
 
     tools {
         jdk 'JDK 17'

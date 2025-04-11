@@ -38,7 +38,7 @@ public class SeleniumDemo {
 	    	Map<String, Object> sauceOptions = new HashMap<>();
 	    	sauceOptions.put("username", username);
 	    	sauceOptions.put("accessKey", accessKey);
-	    	 sauceOptions.put("region", "eu");
+	    	 sauceOptions.put("region", "EU Central 1");
 	    	browserOptions.setCapability("sauce:options", sauceOptions);
 
 	    	// start the session

@@ -1,28 +1,26 @@
 pipeline {
-    agent any
-    environment {
-            SAUCE_USERNAME = credentials('sauce-username')
-            SAUCE_ACCESS_KEY = credentials('sauce-access-key')
-            SAUCE_DATA_CENTER = 'EU Central 1' // Replace with your Sauce Labs region
+    agent {
+        docker {
+            image 'prats069/selenium-sauce3:latest'
         }
-
-    
-
+    }
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                 git url: 'https://github.com/Prats111/EclipseDemo.git', branch: 'master'
+                sh 'mvn clean install'
             }
         }
-
-         stage('Run Selenium Tests in Docker') {
+        stage('Test') {
             steps {
-               docker.image('prats069/selenium-sauce3').inside{
-                     sh "echo SAUCE_USERNAME=$SAUCE_USERNAME"
-    				 sh "echo SAUCE_ACCESS_KEY=$SAUCE_ACCESS_KEY"
-    				// sh "mvn test"
-                sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
+                withCredentials([usernamePassword(credentialsId: 'saucelabs-credentials', usernameVariable: 'SAUCE_USERNAME', passwordVariable: 'SAUCE_ACCESS_KEY')]) {
+                    sh "mvn test -Dsauce.username=${SAUCE_USERNAME} -Dsauce.accessKey=${SAUCE_ACCESS_KEY} -Dsauce.testName='My Test' -Dsauce.build='Jenkins Build ${BUILD_NUMBER}'"
+                }
             }
         }
-    }}
+    }
+    post {
+        success {
+            junit '**/TEST-*.xml'
+        }
+    }
 }

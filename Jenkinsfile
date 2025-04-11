@@ -6,26 +6,22 @@ pipeline {
             SAUCE_DATA_CENTER = 'EU Central 1' // Replace with your Sauce Labs region
         }
 
-    tools {
-        jdk 'JDK 17'
-        maven 'maven 3.9.8'
-    }
+    
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                 git url: 'https://github.com/Prats111/EclipseDemo.git', branch: 'master'
             }
         }
 
-         stage('Build and Test') {
+         stage('Run Selenium Tests in Docker') {
             steps {
-                // Print env variables for debugging
-                sh 'echo $SAUCE_USERNAME'
-                sh 'echo $SAUCE_ACCESS_KEY'
-                
-                // Run your Maven tests
-                sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
+               docker.image('prats069/selenium-sauce3').inside ("-e SAUCE_USERNAME=$SAUCE_USERNAME -e SAUCE_ACCESS_KEY=$SAUCE_ACCESS_KEY"){
+                     sh "echo SAUCE_USERNAME=$SAUCE_USERNAME"
+    				 sh "echo SAUCE_ACCESS_KEY=$SAUCE_ACCESS_KEY"
+    				 sh "mvn test"
+                //sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
             }
         }
     }

@@ -13,15 +13,14 @@ pipeline {
             }
         }
 
-        stage('Build') {
+         stage('Build and Test') {
             steps {
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
+                // Print env variables for debugging
+                sh 'echo $SAUCE_USERNAME'
+                sh 'echo $SAUCE_ACCESS_KEY'
+                
+                // Run your Maven tests
+                sh 'mvn clean test -Dsauce.username=$SAUCE_USERNAME -Dsauce.accessKey=$SAUCE_ACCESS_KEY'
             }
         }
     }

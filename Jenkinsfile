@@ -5,6 +5,9 @@ pipeline {
         SAUCE_USERNAME = credentials('sauce-username')     // Use Jenkins credentials ID
         SAUCE_ACCESS_KEY = credentials('sauce-access-key') // Use Jenkins credentials ID
     }
+    tools {
+    git 'git'  // use the name you gave in the Global Tool Configuration
+   }
 
     stages {
         stage('Checkout') {
